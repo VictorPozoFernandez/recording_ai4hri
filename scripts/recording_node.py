@@ -21,31 +21,35 @@ def record_audio(pub, energy, pause):
     r.pause_threshold = pause
 
     # Open the microphone with the specified sample rate and device index
-    counter = 0
-    found_micro = False
-    while (counter < 15) and (found_micro == False) :
-        try:      
-            with sr.Microphone(sample_rate=16000,  device_index=counter) as source:
+       
+    try:  
 
-                # Clear the console
-                for x in range(4):
-                    print("")
-                rospy.loginfo("Node record_node initialized. Listening...")
+        # Print available microphones PC
 
-                # Record audio while the ROS node is running
-                while not rospy.is_shutdown():
-                    audio = r.listen(source)
-                    wav_data = audio.get_wav_data()
+        for index, name in enumerate(sr.Microphone.list_microphone_names()): print(f'{index}, {name}')
+        print('')
+        counter = input('Choose a microphone device:')
 
-                    if (audio_control == "RESUME"):
-                        pub.publish(wav_data)
+        with sr.Microphone(sample_rate=16000,  device_index=int(counter)) as source:
 
-                    found_micro = True
-        except:
-            counter += 1
-            if counter >= 15:
-                print("Microphone not found")
-                break
+            # Clear the console
+            for x in range(4):
+                print("")
+            rospy.loginfo("Node record_node initialized. Listening...")
+
+            # Record audio while the ROS node is running
+            while not rospy.is_shutdown():
+                audio = r.listen(source)
+                wav_data = audio.get_wav_data()
+
+                if (audio_control == "RESUME"):
+                    pub.publish(wav_data)
+
+                found_micro = True
+        
+    except Exception as e: 
+            print(e)
+            print("Microphone not found")
 
 def main():
     # Initialize the whisper ROS node and a publisher for the AI4HRI utterance topic
@@ -55,9 +59,6 @@ def main():
 
     energy = 15000
     pause = 0.5
-
-    # Print available microhpones PC
-    for index, name in enumerate(sr.Microphone.list_microphone_names()): print(f'{index}, {name}')
 
     record_audio(pub, energy, pause)
 
