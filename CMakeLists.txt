@@ -105,10 +105,13 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES recording_ai4hri
+  LIBRARIES recording_ai4hri
 #  CATKIN_DEPENDS audio_common_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
+
+catkin_install_python(PROGRAMS scripts/recording_node.py
+DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ###########
 ## Build ##
