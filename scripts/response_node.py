@@ -1,14 +1,15 @@
+PEPPER = rospy.get_param('/response/DEBUG')
+
 import os
 from std_msgs.msg import String
 import os
 import rospy
-from elevenlabs import generate, stream, set_api_key
-from nao_interaction_msgs.srv import Say
-
-PEPPER = rospy.get_param('/response/DEBUG')
 
 if PEPPER == False: 
+    from elevenlabs import generate, stream, set_api_key
     set_api_key(os.environ.get("ELEVENLABS_API_KEY"))
+else:
+    from nao_interaction_msgs.srv import Say
 
 
 def main():
