@@ -110,7 +110,7 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-catkin_install_python(PROGRAMS scripts/recording_node.py
+catkin_install_python(PROGRAMS scripts/recording_node.py scripts/camera_node.py scripts/response_node.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ###########
