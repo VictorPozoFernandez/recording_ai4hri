@@ -1,9 +1,9 @@
-PEPPER = rospy.get_param('/response/DEBUG')
-
 import os
 from std_msgs.msg import String
 import os
 import rospy
+
+PEPPER = rospy.get_param('/response/PEPPER')
 
 if PEPPER == False: 
     from elevenlabs import generate, stream, set_api_key
