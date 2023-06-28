@@ -34,8 +34,12 @@ def callback(msg):
         Send_utterance_to_Pepper(utterance) #Publish the utterance text in the tts Ros service
 
     else:
-        audio_stream = generate( text=utterance, stream=True)
-        stream(audio_stream)
+
+        try:
+            audio_stream = generate( text=utterance, stream=True)
+            stream(audio_stream)
+        except:
+            pass
     
     for i in range (3):
         rospy.sleep(1)
