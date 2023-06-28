@@ -78,6 +78,7 @@ def record_audio(pub):
 
                 else:
                     rospy.sleep(0.1)
+                    complete_audio = None
                 
         
     except Exception as e: 

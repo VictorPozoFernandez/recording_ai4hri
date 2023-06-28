@@ -37,7 +37,7 @@ def callback(msg):
         audio_stream = generate( text=utterance, stream=True)
         stream(audio_stream)
     
-    for i in range (2):
+    for i in range (3):
         rospy.sleep(1)
     pub2.publish("RESUME")
 
