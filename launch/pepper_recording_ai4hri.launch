@@ -1,0 +1,25 @@
+<launch>
+
+  <!-- Arguments -->
+
+  <arg name="DEBUG" default="False" />
+  <arg name="PEPPER" default="True" />
+
+  <!-- Nodes -->
+
+  <node name="record" pkg="recording_ai4hri" type="recording_node.py" output="screen">
+    <param name="DEBUG" value="$(arg DEBUG)" />
+  </node>
+
+  <node name="response" pkg="recording_ai4hri" type="response_node.py" output="screen">
+    <param name="DEBUG" value="$(arg DEBUG)" />
+    <param name="PEPPER" value="$(arg PEPPER)" />
+  </node>
+
+  <!--<node name="camera" pkg="recording_ai4hri" type="camera_node.py" output="screen">
+    <param name="DEBUG" value="$(arg DEBUG)" />
+  </node>-->
+
+
+
+</launch>
