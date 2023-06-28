@@ -14,6 +14,10 @@
   <node name="response" pkg="recording_ai4hri" type="response_node.py" output="screen">
     <param name="DEBUG" value="$(arg DEBUG)" />
     <param name="PEPPER" value="$(arg PEPPER)" />
+
+  </node>  <node name="control" pkg="recording_ai4hri" type="audio_control.py" output="screen">
+    <param name="DEBUG" value="$(arg DEBUG)" />
+    <param name="PEPPER" value="$(arg PEPPER)" />
   </node>
 
   <!--<node name="camera" pkg="recording_ai4hri" type="camera_node.py" output="screen">
