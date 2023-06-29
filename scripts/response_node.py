@@ -25,9 +25,7 @@ def main():
 def callback(msg):
 
     # Get new utterance from message and classify it
-    pub2 = rospy.Publisher('/ai4hri/audio_control', String, queue_size= 1) 
     utterance = msg.data
-    #pub2.publish("STOP")
     rospy.sleep(1)
 
     if PEPPER == True:
@@ -43,7 +41,6 @@ def callback(msg):
     
     for i in range (3):
         rospy.sleep(1)
-    pub2.publish("RESUME")
 
 
 def Send_utterance_to_Pepper(utterance):

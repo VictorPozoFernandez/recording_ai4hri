@@ -4,10 +4,6 @@ from std_msgs.msg import String
 import speech_recognition as sr
 import numpy as np
 
-global audio_control
-audio_control = "RESUME"
-
-
 def callback(msg):
     global audio_control
     audio_control = msg.data
@@ -16,6 +12,7 @@ def callback(msg):
 def record_audio(pub):
 
     global audio_control
+    audio_control=False
 
     # Initialize the recognizer and set energy and pause thresholds
     r = sr.Recognizer()
@@ -46,53 +43,31 @@ def record_audio(pub):
             # Record audio while the ROS node is running
             while not rospy.is_shutdown():
                 
-                if (audio_control == "RESUME"):
-                    audio = r.record(source, duration=1)  # Record for a small duration
-                   
-                    # Check for silence (low energy level)
-                    energy_level = get_audio_energy(audio)
+                audio = r.record(source, duration=1)  # Record for a small duration
 
-                    if energy_level > energy_threshold:
+                if audio_control == "RESUME":
 
-                         # Concatenate audio chunks if any speech is detected
-                        if complete_audio == None:
-                            complete_audio = sr.AudioData(previous_audio.frame_data + audio.frame_data, audio.sample_rate, audio.sample_width)
-                        else:
-                            complete_audio = sr.AudioData(complete_audio.frame_data + audio.frame_data, audio.sample_rate, audio.sample_width)
-                    
-                    elif (energy_level < energy_threshold) and (complete_audio != None) and (counter < 2):
-                        
+                        # Concatenate audio chunks if any speech is detected
+                    if complete_audio == None:
+                        complete_audio = sr.AudioData(previous_audio.frame_data + audio.frame_data, audio.sample_rate, audio.sample_width)
+                    else:
                         complete_audio = sr.AudioData(complete_audio.frame_data + audio.frame_data, audio.sample_rate, audio.sample_width)
-                        counter = counter + 1
-
-                    elif (energy_level < energy_threshold) and (complete_audio != None):  
-                       
-                        complete_audio = sr.AudioData(complete_audio.frame_data + audio.frame_data, audio.sample_rate, audio.sample_width)
-                        counter = 0
-                        wav_data = complete_audio.get_wav_data()
-                        pub.publish(wav_data)
-                        complete_audio = None
-
-                    previous_audio = audio
+                
+                elif (audio_control == "STOP") and (complete_audio != None):              
                     
-
+                    complete_audio = sr.AudioData(complete_audio.frame_data + audio.frame_data, audio.sample_rate, audio.sample_width)
+                    wav_data = complete_audio.get_wav_data()
+                    pub.publish(wav_data)
+                    complete_audio = None
+                    
                 else:
-                    rospy.sleep(0.1)
+                    previous_audio = audio
                     complete_audio = None
                 
         
     except Exception as e: 
             print(e)
             print("Microphone not found")
-
-
-def get_audio_energy(audio):
-    """Calculate the energy of an AudioData object"""
-    # Convert audio data to numpy array
-    audio_data = np.frombuffer(audio.frame_data, np.int16)
-    # Calculate RMS value
-    rms_val = np.sqrt(np.mean(audio_data**2))
-    return 10000/rms_val
 
 
 def main():
