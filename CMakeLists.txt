@@ -12,11 +12,12 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+generate_dynamic_reconfigure_options(cfg/audiorecorder_ai4hri.cfg)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -106,6 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
   LIBRARIES recording_ai4hri
+  CATKIN_DEPENDS dynamic_reconfigure
 #  CATKIN_DEPENDS audio_common_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
