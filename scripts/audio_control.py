@@ -3,12 +3,12 @@ from pynput import keyboard
 from std_msgs.msg import String
 
 audio_control = "STOP"
-keyword = 'p'
+keyword = keyboard.Key.space
 
 def on_press(key):
     global audio_control
     try:
-        if key.char == keyword:
+        if key == keyword:
             audio_control = "RESUME"
             msg = String()
             msg.data = audio_control
@@ -19,7 +19,7 @@ def on_press(key):
 def on_release(key):
     global audio_control
     try:
-        if key.char == keyword:
+        if key == keyword:
             audio_control = "STOP"
             msg = String()
             msg.data = audio_control
