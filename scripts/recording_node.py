@@ -3,7 +3,7 @@ from audio_common_msgs.msg import AudioData
 from std_msgs.msg import String
 import speech_recognition as sr
 from dynamic_reconfigure.server import Server
-from ai4hri.cfg import audiorecorder_ai4hriConfig
+from recording_ai4hri.cfg import audiorecorder_ai4hriConfig
 
 global audio_control
 audio_control = "STOP"
