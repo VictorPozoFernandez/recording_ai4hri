@@ -6,8 +6,11 @@ import rospy
 PEPPER = rospy.get_param('/response/PEPPER')
 
 if PEPPER == False: 
-    from elevenlabs import generate, stream, set_api_key
-    set_api_key(os.environ.get("ELEVENLABS_API_KEY"))
+    try:
+        from elevenlabs import generate, stream, set_api_key
+        set_api_key(os.environ.get("ELEVENLABS_API_KEY"))
+    except:
+        pass
 else:
     from nao_interaction_msgs.srv import Say
 
